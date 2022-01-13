@@ -1,0 +1,1 @@
+Map, Lambda, Zip, and list comprehension are heavily used in spark
