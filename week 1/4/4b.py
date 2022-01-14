@@ -6,5 +6,5 @@ orders = [
     [88112, "Einfuhrung in Python3, Bernd Klein", 3, 24.99]
 ]
 
-updated_orders = map(lambda x: (x[0], x[2]*x[3]) if (x[2]*x[3]) >= 100 else (x[0], x[2]*x[3]+10), orders)
-print(list(updated_orders))
+updated_orders = list(map(lambda x: (x[0], x[2]*x[3]) if (x[2]*x[3]) >= 100 else (x[0], x[2]*x[3]+10), orders))
+print(updated_orders)
