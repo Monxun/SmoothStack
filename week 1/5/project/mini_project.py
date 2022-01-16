@@ -31,7 +31,7 @@ import logging
 import os
 import streamlit as st
 import pandas as pd
-from services import check_file, log_data
+from services import check_file, log_data, show_data, get_data
 
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 
@@ -74,32 +74,17 @@ month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
 # grab worksheet
 ws = wb['Summary Rolling MoM']
 
-row = None
-for item in ws['A']:
-    if month_year_format in str(item.value):
-        row = item.row
-        st.write(f'Row: {row}')
-test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
-new_test = [item for item in test[0][1:] if item != None]
-st.write(new_test)
+st.write('_' * 30)
+st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
 
-# create dictionary from row data
-row_data = {}
-row_data['month_of'] = f"Month of {month_year[1].capitalize()}, {month_year[0]}"
-row_data['calls_offered'] = f"Month of {month_year[1].capitalize()}, {month_year[0]}"
-row_data['30s_abandonment'] = f"Abandon after 30s: {round(new_test[1]*100,2)}%"
-row_data['fcr'] = f"FCR : {new_test[2]*100}0%"
-row_data['dsat'] = f"DSAT : {new_test[3]*100}0%"
-row_data['csat'] = f"CSAT : {new_test[4]*100}0%"
+# get row data and return dictionary
+row_data = get_data(ws, month_year_format)
 
+# log data
 log_data(row_data)
 
-# logging.info(f"Month of {month_year[1].capitalize()}, {month_year[0]}")
-# logging.info(f"Calls Offered: {new_test[0]}")
-# # logging.info(f"Abandon after 30s: {round(new_test[1]*100,2)}%")
-# logging.info(f"FCR : {new_test[2]*100}0%")
-# logging.info(f"DSAT : {new_test[3]*100}0%")
-# logging.info(f"CSAT : {new_test[4]*100}0%")
+# show data
+show_data(row_data)
 
 # grab worksheet
 
