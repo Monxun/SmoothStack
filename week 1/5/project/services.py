@@ -18,3 +18,8 @@ def check_file(file):
             continue
 
 
+def log_data(row_data):
+    print(row_data)
+    for item in row_data:
+        print(item, item.value)
+        # logging.info(item.value)

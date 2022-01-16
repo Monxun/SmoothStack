@@ -31,7 +31,7 @@ import logging
 import os
 import streamlit as st
 import pandas as pd
-from services import check_file
+from services import check_file, log_data
 
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 
@@ -83,7 +83,18 @@ test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
 new_test = [item for item in test[0][1:] if item != None]
 st.write(new_test)
 
-# logging.info(f"Month of {month_year[1].capitalize()}, {month_year[0]} ")
+# create dictionary from row data
+row_data = {}
+row_data['month_of'] = f"Month of {month_year[1].capitalize()}, {month_year[0]}"
+row_data['calls_offered'] = f"Month of {month_year[1].capitalize()}, {month_year[0]}"
+row_data['30s_abandonment'] = f"Abandon after 30s: {round(new_test[1]*100,2)}%"
+row_data['fcr'] = f"FCR : {new_test[2]*100}0%"
+row_data['dsat'] = f"DSAT : {new_test[3]*100}0%"
+row_data['csat'] = f"CSAT : {new_test[4]*100}0%"
+
+log_data(row_data)
+
+# logging.info(f"Month of {month_year[1].capitalize()}, {month_year[0]}")
 # logging.info(f"Calls Offered: {new_test[0]}")
 # # logging.info(f"Abandon after 30s: {round(new_test[1]*100,2)}%")
 # logging.info(f"FCR : {new_test[2]*100}0%")
