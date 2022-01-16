@@ -29,6 +29,7 @@ from openpyxl import load_workbook
 import logging
 import os
 import streamlit as st
+from services import check_file
 
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 
@@ -53,20 +54,17 @@ if workbook_selector:
 
 
 # verify file exists / error handling
-while True:
-    try:
-        file = f'data/{workbook_selector}'
-        if os.path.exists(file):
-            logging.info()
-            wb = load_workbook(file)
-            break
-    except FileNotFoundError:
-        print("FileNotFound: not a valid file.")
-    else:
-        continue
+check_file(workbook_selector)
+
+# initialize workbook
+wb = load_workbook(workbook_selector)
 
 # grab month and year from file selection
 month_year = [item for item in workbook_selector.split("_")[::-1] if item.capitalize() in months or item in years]
+
+# 
+mand = f'{month_year[0]}-{months[month_year[1].capitalize()]}'
+
 
 # grab worksheet
 ws = wb['Summary Rolling MoM']
