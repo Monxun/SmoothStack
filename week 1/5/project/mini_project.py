@@ -67,9 +67,9 @@ month_year = [item for item in workbook_selector.replace('.', '_').split("_") if
 # display month / year
 st.text(f'Month: {month_year[0].capitalize()}')
 st.text(f'Year: {month_year[1]}')
-# 
+
+# format month year for datetime comparison
 month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
-print(month_year_format)
 
 # grab worksheet
 ws = wb['Summary Rolling MoM']
@@ -78,10 +78,11 @@ row = None
 for item in ws['A']:
     if month_year_format in str(item.value):
         row = item.row
-        st.write(row)
-# test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
-# new_test = [item for item in test[0][1:] if item != None]
-# print(new_test)
+        st.write(f'Row: {row}')
+test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
+new_test = [item for item in test[0][1:] if item != None]
+st.write(new_test)
+
 # logging.info(f"Month of {month_year[1].capitalize()}, {month_year[0]} ")
 # logging.info(f"Calls Offered: {new_test[0]}")
 # # logging.info(f"Abandon after 30s: {round(new_test[1]*100,2)}%")
