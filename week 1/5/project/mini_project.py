@@ -26,9 +26,11 @@ Rest all values remain the same.
 """
 
 from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 import logging
 import os
 import streamlit as st
+import pandas as pd
 from services import check_file
 
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
@@ -50,7 +52,7 @@ workbook_selector = st.selectbox('Select a file', workbooks)  # replace with str
 
 # if file selected display text
 if workbook_selector:
-    st.text(f'{workbook_selector} is selected.')
+    st.text(f'({workbook_selector} is selected.)')
 
 
 # verify file exists / error handling
@@ -61,15 +63,31 @@ wb = load_workbook(f'data/{workbook_selector}')
 
 # grab month and year from file selection
 month_year = [item for item in workbook_selector.replace('.', '_').split("_") if item.capitalize() in months or item in years]
-print(month_year)
+
+# display month / year
 st.text(f'Month: {month_year[0].capitalize()}')
 st.text(f'Year: {month_year[1]}')
 # 
-# mand = f'{month_year[0]}-{months[month_year[1].capitalize()]}'
-
+month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
+print(month_year_format)
 
 # grab worksheet
 ws = wb['Summary Rolling MoM']
+
+row = None
+for item in ws['A']:
+    if month_year_format in str(item.value):
+        row = item.row
+        st.write(row)
+# test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
+# new_test = [item for item in test[0][1:] if item != None]
+# print(new_test)
+# logging.info(f"Month of {month_year[1].capitalize()}, {month_year[0]} ")
+# logging.info(f"Calls Offered: {new_test[0]}")
+# # logging.info(f"Abandon after 30s: {round(new_test[1]*100,2)}%")
+# logging.info(f"FCR : {new_test[2]*100}0%")
+# logging.info(f"DSAT : {new_test[3]*100}0%")
+# logging.info(f"CSAT : {new_test[4]*100}0%")
 
 # grab worksheet
 

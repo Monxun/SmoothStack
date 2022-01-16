@@ -1,4 +1,7 @@
 from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+from itertools import islice
+import pandas as pd
 import logging
 import os
 
@@ -13,3 +16,5 @@ def check_file(file):
             print("FileNotFound: not a valid file.")
         else:
             continue
+
+
