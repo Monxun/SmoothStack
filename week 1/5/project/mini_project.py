@@ -40,12 +40,24 @@ months = {'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May'
           'Aug': '08', 'Sep': '09', 'Oc': '10', 'Nov': '11', 'Dec': '12'}
 years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021']
 
-workbook_selector = 'expedia_report_monthly_january_2018.xlsx'
 
+# streamlit title for page
+st.title('Spreadsheet Mini-Project')
+
+# workbook file selectbox 
+workbook_selector = st.selectbox('Select a file', workbooks)  # replace with streamlit selector 
+
+# if file selected display text
+if workbook_selector:
+    st.text(f'{workbook_selector} is selected.')
+
+
+# verify file exists / error handling
 while True:
     try:
         file = f'data/{workbook_selector}'
         if os.path.exists(file):
+            logging.info()
             wb = load_workbook(file)
             break
     except FileNotFoundError:
@@ -53,8 +65,11 @@ while True:
     else:
         continue
 
-for sheet in wb:
-    print (sheet)
+# grab month and year from file selection
+month_year = [item for item in workbook_selector.split("_")[::-1] if item.capitalize() in months or item in years]
+
+# grab worksheet
+ws = wb['Summary Rolling MoM']
 
 # grab worksheet
 
