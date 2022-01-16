@@ -57,13 +57,15 @@ if workbook_selector:
 check_file(workbook_selector)
 
 # initialize workbook
-wb = load_workbook(workbook_selector)
+wb = load_workbook(f'data/{workbook_selector}')
 
 # grab month and year from file selection
-month_year = [item for item in workbook_selector.split("_")[::-1] if item.capitalize() in months or item in years]
-
+month_year = [item for item in workbook_selector.replace('.', '_').split("_") if item.capitalize() in months or item in years]
+print(month_year)
+st.text(f'Month: {month_year[0].capitalize()}')
+st.text(f'Year: {month_year[1]}')
 # 
-mand = f'{month_year[0]}-{months[month_year[1].capitalize()]}'
+# mand = f'{month_year[0]}-{months[month_year[1].capitalize()]}'
 
 
 # grab worksheet
