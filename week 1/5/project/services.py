@@ -24,7 +24,7 @@ def get_data(ws, month_year_format):
     for item in ws['A']:
         if month_year_format in str(item.value):
             row = item.row
-            st.write(f'Row: {row}')
+            st.write(f'(Row: {row})')
     test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
     new_test = [item for item in test[0][1:] if item != None]
 
