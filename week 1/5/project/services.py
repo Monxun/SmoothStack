@@ -58,14 +58,14 @@ def get_voc(ws, month_year_format):
             col = item.column
             st.write(f'(Column: {col})')
     test = [co for co in ws.iter_cols(min_col=col, max_col=col, values_only=True)]
-    new_test = [item for item in test[0][1:] if item != None]
+    new_test = [item for item in test[0][1:] if item != None and isinstance(item, int)]
 
     # create dictionary from column data
-    col_data = [new_test] # change back to dictionary
-    # col_data['30s_abandonment'] = f'Abandon after 30s: {round(new_test[1]*100,2)}%'
-    # col_data['fcr'] = f'FCR : {new_test[2]*100}0%'
-    # col_data['dsat'] = f'DSAT : {new_test[3]*100}0%'
-    # col_data['csat'] = f'CSAT : {new_test[4]*100}0%'
+    col_data = {}
+    col_data['base'] = f'Base Size: {new_test[0]}'
+    col_data['promoters'] = f'Promoters: {new_test[1]}'
+    col_data['passives'] = f'Passives: {new_test[2]}'
+    col_data['detractors'] = f'Detractors: {new_test[3]}'
 
     return col_data
     

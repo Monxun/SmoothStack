@@ -141,13 +141,11 @@ if navigation != 'Log Files':
             # get column data and return dictionary
             col_data = get_voc(ws, month_year_format)
 
-            st.write(col_data)
+            # log data
+            log_data(col_data)
 
-            # # log data
-            # log_data(col_data)
-
-            # # show data
-            # show_data(col_data)
+            # show data
+            show_data(col_data)
 
     else:
         st.subheader('NO MATCHING FILES')
