@@ -31,7 +31,7 @@ import logging
 import os
 import streamlit as st
 import pandas as pd
-from services import check_file, log_data, show_data, get_data
+from services import check_file, log_data, show_data, get_current_month, get_summary
 
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 
@@ -46,6 +46,17 @@ years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','
 
 # streamlit title for page
 st.title('Spreadsheet Mini-Project')
+
+# streamlit button to get current month data if file available
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
+    select_file_button = st.button('Select File')
+with col2:
+    current_month_button = st.button('Current Month')
+# FINISH PAGE SELECTOR LOGIC
+
+#####################################################
+#SELECT MONTH
 
 # workbook file selectbox 
 workbook_selector = st.selectbox('Select a file', workbooks)  # replace with streamlit selector 
@@ -78,7 +89,7 @@ st.write('_' * 30)
 st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
 
 # get row data and return dictionary
-row_data = get_data(ws, month_year_format)
+row_data = get_summary(ws, month_year_format)
 
 # log data
 log_data(row_data)
@@ -104,3 +115,7 @@ show_data(row_data)
 
 # the iter_row() is a generator
 # so you gotta use list(worksheet_name.iter_row())
+
+
+#####################################################
+#CURRENT MONTH

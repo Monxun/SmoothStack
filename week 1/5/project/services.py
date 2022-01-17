@@ -18,8 +18,10 @@ def check_file(file):
         else:
             continue
 
+def get_current_month():
+    pass
 
-def get_data(ws, month_year_format):
+def get_summary(ws, month_year_format):
     row = None
     for item in ws['A']:
         if month_year_format in str(item.value):
