@@ -52,6 +52,7 @@ if navigation != 'Log File':
         # if file selected display text
         if workbook_selector:
             st.text(f'({workbook_selector} is selected.)')
+            logging.info(f'({workbook_selector} is selected.)')
 
         # initialize workbook
         wb = load_workbook(f'data/{workbook_selector}')
