@@ -33,6 +33,9 @@ import streamlit as st
 import pandas as pd
 from services import check_file, log_data, show_data, get_current_month, get_summary
 
+#####################################################
+#INITIALIZE
+
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 
 files = os.listdir('./data')
@@ -43,20 +46,24 @@ months = {'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May'
           'Aug': '08', 'Sep': '09', 'Oc': '10', 'Nov': '11', 'Dec': '12'}
 years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021']
 
+#####################################################
+#NAVIGATION
 
 # streamlit title for page
 st.title('Spreadsheet Mini-Project')
 
 # streamlit button to get current month data if file available
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 with col1:
     select_file_button = st.button('Select File')
 with col2:
-    current_month_button = st.button('Current Month')
+    current_month_button = st.button('Current')
+with col6:
+    log_button = st.button('Log File')
 # FINISH PAGE SELECTOR LOGIC
 
 #####################################################
-#SELECT MONTH
+#SELECT FILE
 
 # workbook file selectbox 
 workbook_selector = st.selectbox('Select a file', workbooks)  # replace with streamlit selector 
@@ -82,11 +89,17 @@ st.text(f'Year: {month_year[1]}')
 # format month year for datetime comparison
 month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
 
-# grab worksheet
-ws = wb['Summary Rolling MoM']
+
+#####################################################
+#DATA
 
 st.write('_' * 30)
 st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
+
+# grab worksheet
+sheets = ['Summary Rolling MoM']
+worksheet_selector = st.selectbox('Select a sheet', sheets)
+ws = wb[worksheet_selector]
 
 # get row data and return dictionary
 row_data = get_summary(ws, month_year_format)
