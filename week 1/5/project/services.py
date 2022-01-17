@@ -53,6 +53,8 @@ def get_summary(ws, month_year_format):
     row_data['dsat'] = f'DSAT : {new_test[3]*100}0%'
     row_data['csat'] = f'CSAT : {new_test[4]*100}0%'
 
+    logging.info('get_summary succesful')
+
     return row_data
 
 
@@ -96,6 +98,8 @@ def get_voc(ws, month_year_format):
     col_data['passives'] = [f'Passives: {new_test[2]}', nps_check('passives', new_test[2])]
     col_data['detractors'] = [f'Detractors: {new_test[3]}', nps_check('detractors', new_test[3])]
 
+    logging.info('get_voc succesful')
+
     return col_data
     
 
@@ -107,6 +111,8 @@ def get_current():
     month = datetime.now().strftime('%m')
     month_word = datetime.now().strftime('%B')
     year = datetime.now().year
+
+    logging.info(f'Current: {month_word}, {month}-{year}')
 
     return month, month_word, year
     
@@ -139,6 +145,8 @@ def show_summary(row_data):
     for item in row_data:
         st.write(row_data[item])
 
+    logging.info(f'Displayed summary in app')
+
 
 def show_voc(col_data):
     """
@@ -149,3 +157,13 @@ def show_voc(col_data):
             st.write(col_data[item])
         else:
             st.write(f'{col_data[item][0]} - {col_data[item][1]}')
+
+    logging.info(f'Displayed voc in app')
+
+
+def show_logs():
+    with open('log.log') as log_file:
+        for line in log_file:
+            st.write(line)
+
+    logging.info('Viewed logs')

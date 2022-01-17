@@ -18,7 +18,8 @@ from services import (
     log_summary, 
     log_voc,
     show_summary, 
-    show_voc
+    show_voc,
+    show_logs
 )
 
 #####################################################
@@ -140,7 +141,7 @@ else:
     #####################################################
     #LOG FILE
 
-    st.write('(Logfile...)')
+    show_logs()
 
 
 
