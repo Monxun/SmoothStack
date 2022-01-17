@@ -43,15 +43,15 @@ def get_summary(ws, month_year_format):
         if month_year_format in str(item.value):
             row = item.row
             st.write(f'(Row: {row})')
-    test = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
-    new_test = [item for item in test[0][1:] if item != None]
+    values = [ro for ro in ws.iter_rows(min_row=row, max_row=row, values_only=True)]
+    new_values = [item for item in values[0][1:] if item != None]
 
     # create dictionary from row data
     row_data = {}
-    row_data['30s_abandonment'] = f'Abandon after 30s: {round(new_test[1]*100,2)}%'
-    row_data['fcr'] = f'FCR : {new_test[2]*100}0%'
-    row_data['dsat'] = f'DSAT : {new_test[3]*100}0%'
-    row_data['csat'] = f'CSAT : {new_test[4]*100}0%'
+    row_data['30s_abandonment'] = f'Abandon after 30s: {round(new_values[1]*100,2)}%'
+    row_data['fcr'] = f'FCR : {new_values[2]*100}0%'
+    row_data['dsat'] = f'DSAT : {new_values[3]*100}0%'
+    row_data['csat'] = f'CSAT : {new_values[4]*100}0%'
 
     logging.info('get_summary succesful')
 
@@ -88,15 +88,15 @@ def get_voc(ws, month_year_format):
         if month_year_format in str(item.value):
             col = item.column
             st.write(f'(Column: {col})')
-    test = [co for co in ws.iter_cols(min_col=col, max_col=col, values_only=True)]
-    new_test = [item for item in test[0][1:] if item != None and isinstance(item, int)]
+    values = [co for co in ws.iter_cols(min_col=col, max_col=col, values_only=True)]
+    new_values = [item for item in values[0][1:] if item != None and isinstance(item, int)]
 
     # create dictionary from column data
     col_data = {}
-    col_data['base'] = f'Base Size: {new_test[0]}'
-    col_data['promoters'] = [f'Promoters: {new_test[1]}', nps_check('promoters', new_test[1])]
-    col_data['passives'] = [f'Passives: {new_test[2]}', nps_check('passives', new_test[2])]
-    col_data['detractors'] = [f'Detractors: {new_test[3]}', nps_check('detractors', new_test[3])]
+    col_data['base'] = f'Base Size: {new_values[0]}'
+    col_data['promoters'] = [f'Promoters: {new_values[1]}', nps_check('promoters', new_values[1])]
+    col_data['passives'] = [f'Passives: {new_values[2]}', nps_check('passives', new_values[2])]
+    col_data['detractors'] = [f'Detractors: {new_values[3]}', nps_check('detractors', new_values[3])]
 
     logging.info('get_voc succesful')
 
