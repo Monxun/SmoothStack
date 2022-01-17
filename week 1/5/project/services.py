@@ -10,8 +10,7 @@ import os
 files = os.listdir('./data')
 workbooks = [item for item in files if '.xlsx' in item]
 
-logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
-logger = logging.getLogger()
+logging.basicConfig(filename='log.log', filemode='w', format='%(asctime)s - %(levelname)s %(message)s', datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG, force=True)
 
 months = {'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06', 'July': '07',
           'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12', 'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07',
@@ -26,10 +25,11 @@ def check_file(file):
         try:
             file = f'data/{file}'
             if os.path.exists(file):
-                logger.info(f"{file} exists")
+                logging.info(f"{file} exists")
                 break
         except FileNotFoundError:
             print("FileNotFound: not a valid file.")
+            logging.warning("FileNotFound: not a valid file.")
         else:
             continue
 
@@ -118,7 +118,7 @@ def log_summary(row_data):
     """
     print(row_data)
     for item in row_data:
-        logger.info(row_data[item])
+        logging.info(row_data[item])
 
 
 def log_voc(col_data):
@@ -127,9 +127,9 @@ def log_voc(col_data):
     """
     for item in col_data:
         if 'base' in item:
-            logger.info(col_data[item])
+            logging.info(col_data[item])
         else:
-            logger.info(f'{col_data[item][0]} - {col_data[item][1]}')
+            logging.info(f'{col_data[item][0]} - {col_data[item][1]}')
 
 
 def show_summary(row_data):
