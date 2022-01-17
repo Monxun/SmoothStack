@@ -36,7 +36,7 @@ st.header(navigation)
 
 data_flag = False
 
-if navigation != 'Log Files':
+if navigation != 'Log File':
 
     if navigation == 'Select by File':
 
