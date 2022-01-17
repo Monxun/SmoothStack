@@ -1,30 +1,3 @@
-"""
-1. Please import csv (or) openpyxl & Logging packages for this problem.
-2. Program should take any filename as per the format mentioned as input.
-3. Input month value from the file name where  eg :january(expedia_report_monthly_january_2018.xlsx)
-4. Based on the month and year input values value print the values in logfile using logger
-
-This is from the first tab :
-
-Eg for January :
-
-Calls Offered: 16,915
-Abandon after 30s : 2.32%
-FCR : 86.50%
-DSAT :  14.20%
-CSAT : 78.30%
-
-Similarly go to "VOC Rolling MoM" tab
-
-Grab all the values related to Jan-18 and print.
-
-In Net Promoter Score : Promoters > 200 : good Promoters <200 : bad
-			Passives > 100 : good Passives <100 : bad
-			Decractors > 100 : good Decrators <100 : bad
-
-Rest all values remain the same.
-"""
-
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from datetime import datetime
@@ -38,13 +11,14 @@ from services import (
     logger, 
     months, 
     years, 
-    check_file, 
-    log_data, 
-    show_summary, 
-    show_voc, 
+    check_file,
     get_current, 
     get_summary, 
-    get_voc
+    get_voc,
+    log_summary, 
+    log_voc,
+    show_summary, 
+    show_voc
 )
 
 #####################################################
@@ -112,7 +86,6 @@ if navigation != 'Log Files':
 
         for book in workbooks:
             if month or month_word and year in book.replace('.', '_').split("_"):
-                print(book)
                 current_files.append(book)
                 # data_flag = True
                 
@@ -141,7 +114,7 @@ if navigation != 'Log Files':
             row_data = get_summary(ws, month_year_format)
 
             # log data
-            log_data(row_data)
+            log_summary(row_data)
 
             # show data
             show_summary(row_data)
@@ -154,7 +127,7 @@ if navigation != 'Log Files':
             col_data = get_voc(ws, month_year_format)
 
             # log data
-            log_data(col_data)
+            log_voc(col_data)
 
             # show data
             show_voc(col_data)

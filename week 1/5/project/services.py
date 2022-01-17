@@ -10,7 +10,6 @@ import os
 files = os.listdir('./data')
 workbooks = [item for item in files if '.xlsx' in item]
 
-
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 logger = logging.getLogger()
 
@@ -20,6 +19,9 @@ months = {'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May'
 years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021']
 
 def check_file(file):
+    """
+    Checks if file exists and logs it.
+    """
     while True:
         try:
             file = f'data/{file}'
@@ -33,6 +35,9 @@ def check_file(file):
 
 
 def get_summary(ws, month_year_format):
+    """
+    Grabs relevant data from Summary MoM sheet.
+    """
     row = None
     for item in ws['A']:
         if month_year_format in str(item.value):
@@ -52,6 +57,9 @@ def get_summary(ws, month_year_format):
 
 
 def nps_check(type, number):
+    """
+    Check size of group and return 'GOOD' or 'BAD'.
+    """
     if type == 'promoters':
         if number >= 200:
             return 'GOOD'
@@ -69,9 +77,10 @@ def nps_check(type, number):
             return 'BAD'
         
         
-
-
 def get_voc(ws, month_year_format):
+    """
+    Grabs relevant data from VOC MoM sheet.
+    """
     col = None
     for item in ws[1]:
         if month_year_format in str(item.value):
@@ -91,6 +100,9 @@ def get_voc(ws, month_year_format):
     
 
 def get_current():
+    """
+    Grabs the current month in integer / string formats and year.
+    """
     # format month year for datetime comparison
     month = datetime.now().strftime('%m')
     month_word = datetime.now().strftime('%B')
@@ -100,18 +112,38 @@ def get_current():
     
 
 
-def log_data(row_data):
+def log_summary(row_data):
+    """
+    Log Summary data.
+    """
     print(row_data)
     for item in row_data:
         logger.info(row_data[item])
 
 
+def log_voc(col_data):
+    """
+    Log VOC data.
+    """
+    for item in col_data:
+        if 'base' in item:
+            logger.info(col_data[item])
+        else:
+            logger.info(f'{col_data[item][0]} - {col_data[item][1]}')
+
+
 def show_summary(row_data):
+    """
+    Display Summary data in streamlit app.
+    """
     for item in row_data:
         st.write(row_data[item])
 
 
 def show_voc(col_data):
+    """
+    Display VOC data in streamlit app.
+    """
     for item in col_data:
         if 'base' in item:
             st.write(col_data[item])
