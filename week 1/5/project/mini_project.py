@@ -26,7 +26,7 @@ from services import (
 
 # streamlit title for page
 st.title('Spreadsheet Mini-Project')
-pages = ['Select by File', 'Current Month', 'Log Files']
+pages = ['Select by File', 'Current Month', 'Log File']
 navigation = st.selectbox('Select a page', pages)
 
 st.write('_' * 30)
