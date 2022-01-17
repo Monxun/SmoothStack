@@ -27,6 +27,7 @@ Rest all values remain the same.
 
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
+from datetime import datetime
 import logging
 import os
 import streamlit as st
@@ -45,84 +46,108 @@ navigation = st.selectbox('Select a page', pages)
 st.write('_' * 30)
 
 st.header(navigation)
-#####################################################
-#SELECT FILE
 
-# workbook file selectbox 
-workbook_selector = st.selectbox('Select a file', workbooks)  # replace with streamlit selector 
+data_flag = False
 
-# verify file exists / error handling
-check_file(workbook_selector)
+if navigation != 'Log Files':
 
-# if file selected display text
-if workbook_selector:
-    st.text(f'({workbook_selector} is selected.)')
+    if navigation == 'Select by File':
 
-# initialize workbook
-wb = load_workbook(f'data/{workbook_selector}')
+        #####################################################
+        #SELECT FILE
 
-# grab month and year from file selection
-month_year = [item for item in workbook_selector.replace('.', '_').split("_") if item.capitalize() in months or item in years]
+        # workbook file selectbox 
+        workbook_selector = st.selectbox('Select a file', workbooks)  # replace with streamlit selector 
 
-# display month / year
-st.text(f'Month: {month_year[0].capitalize()}')
-st.text(f'Year: {month_year[1]}')
+        # verify file exists / error handling
+        check_file(workbook_selector)
 
-# format month year for datetime comparison
-month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
+        # if file selected display text
+        if workbook_selector:
+            st.text(f'({workbook_selector} is selected.)')
 
-#####################################################
-#CURRENT
+        # initialize workbook
+        wb = load_workbook(f'data/{workbook_selector}')
 
-current = get_current()
+        # grab month and year from file selection
+        month_year = [item for item in workbook_selector.replace('.', '_').split("_") if item.capitalize() in months or item in years]
 
-#####################################################
-#DATA
+        # display month / year
+        st.text(f'Month: {month_year[0].capitalize()}')
+        st.text(f'Year: {month_year[1]}')
 
-st.write('_' * 30)
-st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
+        # format month year for datetime comparison
+        month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
 
-# grab worksheet
-sheets = ['Summary Rolling MoM', 'VOC Rolling MoM']
-worksheet_selector = st.selectbox('Select a sheet', sheets)
-ws = wb[worksheet_selector]
+        # data flag
 
-if worksheet_selector == 'Summary Rolling MoM':
-    st.subheader('Summary')
+        data_flag = True
 
-    # get row data and return dictionary
-    row_data = get_summary(ws, month_year_format)
-
-    # log data
-    log_data(row_data)
-
-    # show data
-    show_data(row_data)
+        st.write('_' * 30)
+        st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
 
 
-if worksheet_selector == 'VOC Rolling MoM':
-    st.subheader('VOC')
+    if navigation == 'Current Month':
 
+        #####################################################
+        #CURRENT MONTH
 
-# grab worksheet
+        data_flag = False
 
-# iterate through rows and get data
+        month, month_word, year = get_current()
+        st.write(f'{month_word}, {year}')
+        current_files = []
 
-
-# for row in ws.iter_rows(min_row=2, max_row=15):
-#         row_id: datetime = row[0].value
-#         if row_id.month == date.month and row_id.year == date.year:
-#             log.info(f"{header[1].value.strip()}: {row[1].value:,}")
-            
-#             for i in range(2, 6):
-#                 percentage = row[i].value * 100
-#                 log.info(f"{header[i].value.strip()}: {percentage:.2f}%")
+        for book in workbooks:
+            if month or month_word and year in book.replace('.', '_').split("_"):
+                print(book)
+                current_files.append(book)
+                # data_flag = True
                 
-#             break
 
-# the iter_row() is a generator
-# so you gotta use list(worksheet_name.iter_row())
+        if current_files:
+            # initialize workbook
+            wb = load_workbook(f'data/{current_files[0]}')
+
+        st.subheader(f'Data for {month_word} - {year}')
 
 
-#####################################################
-#LOG FILE
+    if navigation == 'Select by File' or data_flag == True:
+
+        #####################################################
+        #DATA
+
+        # grab worksheet
+        sheets = ['Summary Rolling MoM', 'VOC Rolling MoM']
+        worksheet_selector = st.selectbox('Select a sheet', sheets)
+        ws = wb[worksheet_selector]
+
+        if worksheet_selector == 'Summary Rolling MoM':
+            st.subheader('Summary')
+
+            # get row data and return dictionary
+            row_data = get_summary(ws, month_year_format)
+
+            # log data
+            log_data(row_data)
+
+            # show data
+            show_data(row_data)
+
+
+        if worksheet_selector == 'VOC Rolling MoM':
+            st.subheader('VOC')
+
+    else:
+        st.subheader('NO MATCHING FILES')
+
+else:
+
+    #####################################################
+    #LOG FILE
+
+    st.write('(Logfile...)')
+
+
+
+

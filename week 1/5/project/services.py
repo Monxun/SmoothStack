@@ -10,6 +10,7 @@ import os
 files = os.listdir('./data')
 workbooks = [item for item in files if '.xlsx' in item]
 
+
 logging.basicConfig(filename='log.log',filemode='w',format='%(asctime)s - %(levelname)s %(message)s',datefmt='%H:%M:%S', encoding='utf-8', level=logging.DEBUG)
 logger = logging.getLogger()
 
@@ -53,9 +54,10 @@ def get_summary(ws, month_year_format):
 def get_current():
     # format month year for datetime comparison
     month = datetime.now().strftime('%m')
+    month_word = datetime.now().strftime('%B')
     year = datetime.now().year
-    month_year_format = f'{year}-{month}'
-    return month_year_format
+
+    return month, month_word, year
     
 
 
