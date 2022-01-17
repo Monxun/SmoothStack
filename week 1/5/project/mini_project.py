@@ -89,26 +89,38 @@ st.text(f'Year: {month_year[1]}')
 # format month year for datetime comparison
 month_year_format = f'{month_year[1]}-{months[month_year[0].capitalize()]}'
 
+#####################################################
+#CURRENT
+
+
 
 #####################################################
 #DATA
 
 st.write('_' * 30)
-st.subheader(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
+st.header(f'Data for {month_year[0].capitalize()} - {month_year[1]}')
 
 # grab worksheet
-sheets = ['Summary Rolling MoM']
+sheets = ['Summary Rolling MoM', 'VOC Rolling MoM']
 worksheet_selector = st.selectbox('Select a sheet', sheets)
 ws = wb[worksheet_selector]
 
-# get row data and return dictionary
-row_data = get_summary(ws, month_year_format)
+if worksheet_selector == 'Summary Rolling MoM':
+    st.subheader('Summary')
 
-# log data
-log_data(row_data)
+    # get row data and return dictionary
+    row_data = get_summary(ws, month_year_format)
 
-# show data
-show_data(row_data)
+    # log data
+    log_data(row_data)
+
+    # show data
+    show_data(row_data)
+
+
+if worksheet_selector == 'VOC Rolling MoM':
+    st.subheader('VOC')
+
 
 # grab worksheet
 
@@ -131,4 +143,4 @@ show_data(row_data)
 
 
 #####################################################
-#CURRENT MONTH
+#LOG FILE
