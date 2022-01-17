@@ -32,7 +32,7 @@ import logging
 import os
 import streamlit as st
 import pandas as pd
-from services import files, workbooks, logger, months, years, check_file, log_data, show_data, get_current, get_summary
+from services import files, workbooks, logger, months, years, check_file, log_data, show_data, get_current, get_summary, get_voc
 
 
 #####################################################
@@ -137,6 +137,17 @@ if navigation != 'Log Files':
 
         if worksheet_selector == 'VOC Rolling MoM':
             st.subheader('VOC')
+
+            # get column data and return dictionary
+            col_data = get_voc(ws, month_year_format)
+
+            st.write(col_data)
+
+            # # log data
+            # log_data(col_data)
+
+            # # show data
+            # show_data(col_data)
 
     else:
         st.subheader('NO MATCHING FILES')

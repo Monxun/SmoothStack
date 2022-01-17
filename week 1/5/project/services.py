@@ -49,6 +49,25 @@ def get_summary(ws, month_year_format):
     row_data['csat'] = f'CSAT : {new_test[4]*100}0%'
 
     return row_data
+
+
+def get_voc(ws, month_year_format):
+    col = None
+    for item in ws[1]:
+        if month_year_format in str(item.value):
+            col = item.column
+            st.write(f'(Column: {col})')
+    test = [co for co in ws.iter_cols(min_col=col, max_col=col, values_only=True)]
+    new_test = [item for item in test[0][1:] if item != None]
+
+    # create dictionary from column data
+    col_data = [new_test] # change back to dictionary
+    # col_data['30s_abandonment'] = f'Abandon after 30s: {round(new_test[1]*100,2)}%'
+    # col_data['fcr'] = f'FCR : {new_test[2]*100}0%'
+    # col_data['dsat'] = f'DSAT : {new_test[3]*100}0%'
+    # col_data['csat'] = f'CSAT : {new_test[4]*100}0%'
+
+    return col_data
     
 
 def get_current():
