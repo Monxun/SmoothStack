@@ -1,6 +1,7 @@
 # Spreadsheet Mini-Project
 
 Basic app that parses xlsx data to retrieve values and apply business logic.
+Utilizes openpyxl for working with spreadsheets and streamlit for app gui.
 
 Step 1:
 
