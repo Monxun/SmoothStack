@@ -51,6 +51,26 @@ def get_summary(ws, month_year_format):
     return row_data
 
 
+def nps_check(type, number):
+    if type == 'promoters':
+        if number >= 200:
+            return 'GOOD'
+        else:
+            return 'BAD'
+    if type == 'passives':
+        if number >= 100:
+            return 'GOOD'
+        else:
+            return 'BAD'
+    if type == 'detractors':
+        if number < 100:
+            return 'GOOD'
+        else:
+            return 'BAD'
+        
+        
+
+
 def get_voc(ws, month_year_format):
     col = None
     for item in ws[1]:
@@ -63,9 +83,9 @@ def get_voc(ws, month_year_format):
     # create dictionary from column data
     col_data = {}
     col_data['base'] = f'Base Size: {new_test[0]}'
-    col_data['promoters'] = f'Promoters: {new_test[1]}'
-    col_data['passives'] = f'Passives: {new_test[2]}'
-    col_data['detractors'] = f'Detractors: {new_test[3]}'
+    col_data['promoters'] = [f'Promoters: {new_test[1]}', nps_check('promoters', new_test[1])]
+    col_data['passives'] = [f'Passives: {new_test[2]}', nps_check('passives', new_test[2])]
+    col_data['detractors'] = [f'Detractors: {new_test[3]}', nps_check('detractors', new_test[3])]
 
     return col_data
     
@@ -86,6 +106,14 @@ def log_data(row_data):
         logger.info(row_data[item])
 
 
-def show_data(row_data):
+def show_summary(row_data):
     for item in row_data:
         st.write(row_data[item])
+
+
+def show_voc(col_data):
+    for item in col_data:
+        if 'base' in item:
+            st.write(col_data[item])
+        else:
+            st.write(f'{col_data[item][0]} - {col_data[item][1]}')
