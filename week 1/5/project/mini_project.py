@@ -25,7 +25,7 @@ from services import (
 #####################################################
 #NAVIGATION
 
-# streamlit title for page
+st.image('./spreadsheet-icon.png', width=100)
 st.title('Spreadsheet Mini-Project')
 pages = ['Select by File', 'Current Month', 'Log File']
 navigation = st.selectbox('Select a page', pages)
