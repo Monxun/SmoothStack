@@ -14,4 +14,4 @@ Step 3:
 
 View app in browser link
 
-![App Screenshot](/app-screenshot.png)
+![App Screenshot](https://github.com/Monxun/SmoothStack/blob/main/week%201/5/project/app-screenshot.PNG)
